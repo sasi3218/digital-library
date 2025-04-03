@@ -46,17 +46,29 @@ router.get('/', (req, res) => {
     res.json(files);
 });
 
-// Delete a file
+// ✅ Fixed Delete Function
 router.delete('/delete', (req, res) => {
     const { filePath } = req.body;
-    const fullPath = path.join(__dirname, '../../backend/uploads', filePath);
+
+    if (!filePath) {
+        return res.status(400).json({ error: 'File path is required' });
+    }
+    const fullPath = path.join(__dirname, '../backend/uploads', filePath);
+
+    console.log(`🔍 Deleting File: ${fullPath}`);
 
     if (fs.existsSync(fullPath)) {
-        fs.unlinkSync(fullPath);
-        res.json({ message: 'File deleted successfully' });
+        fs.unlink(fullPath, (err) => {
+            if (err) {
+                console.error('❌ Error deleting file:', err);
+                return res.status(500).json({ error: 'Error deleting file' });
+            }
+            res.json({ message: 'File deleted successfully' });
+        });
     } else {
         res.status(404).json({ error: 'File not found' });
     }
 });
+
 
 module.exports = router;

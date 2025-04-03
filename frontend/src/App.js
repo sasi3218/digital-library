@@ -86,7 +86,7 @@ const App = () => {
         console.log("🗑 Deleting file:", filePath); // Debugging Log
     
         try {
-            const response = await axios.delete('http://localhost:5000/api/files/delete', {
+            const response = await axios.delete('https://digital-library-production-c64a.up.railway.app/api/files/delete', {
                 data: { filePath },  // ✅ Ensure correct filePath is sent
                 headers: { 'Content-Type': 'application/json' },
             });

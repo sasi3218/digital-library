@@ -52,7 +52,7 @@ const App = () => {
     };
 
     const fetchFiles = async () => {
-        const response = await axios.get('http://localhost:5000/api/files');
+        const response = await axios.get('https://digital-library-production-c64a.up.railway.app/api/files');
         setFiles(response.data);
     };
 
@@ -74,7 +74,7 @@ const App = () => {
         formData.append('month', month);
         formData.append('file', file);
 
-        await axios.post('http://localhost:5000/api/files/upload', formData, {
+        await axios.post('https://digital-library-production-c64a.up.railway.app/api/files/upload', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
 
@@ -83,7 +83,7 @@ const App = () => {
     };
 
     const handleDelete = async (filePath) => {
-        await axios.delete('http://localhost:5000/api/files/delete', {
+        await axios.delete('https://digital-library-production-c64a.up.railway.app/api/files/delete', {
             data: { filePath },
         });
         fetchFiles();
@@ -252,7 +252,7 @@ const App = () => {
                                             <td>{index + 1}</td>
                                             <td>
                                                 <a
-                                                    href={`http://localhost:5000/uploads/${file}`}
+                                                    href={`https://digital-library-production-c64a.up.railway.app/uploads/${file}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >

@@ -83,11 +83,21 @@ const App = () => {
     };
 
     const handleDelete = async (filePath) => {
-        await axios.delete('https://digital-library-production-c64a.up.railway.app/api/files/delete', {
-            data: { filePath },
-        });
-        fetchFiles();
-        alert('File deleted!');
+        console.log("🗑 Deleting file:", filePath); // Debugging Log
+    
+        try {
+            const response = await axios.delete('http://localhost:5000/api/files/delete', {
+                data: { filePath },  // ✅ Ensure correct filePath is sent
+                headers: { 'Content-Type': 'application/json' },
+            });
+    
+            console.log("✅ Delete Response:", response.data);
+            fetchFiles();  
+            alert('File deleted successfully!');
+        } catch (error) {
+            console.error("❌ Error deleting file:", error.response?.data || error.message);
+            alert(error.response?.data.error || 'Failed to delete file');
+        }
     };
 
     const years = Array.from({ length: 31 }, (_, i) => 2000 + i);

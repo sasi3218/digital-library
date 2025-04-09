@@ -23,8 +23,8 @@ const App = () => {
 
     // Hardcoded credentials
     const users = {
-        admin: { username: 'admin', password: 'admin', role: 'admin' },
-        viewer: { username: 'user', password: 'user', role: 'viewer' },
+        admin: { username: 'admin', password: 'Dpo@123', role: 'admin' },
+        viewer: { username: 'user', password: 'Dpo@123', role: 'viewer' },
     };
 
     const handleLogin = (e) => {
@@ -100,7 +100,7 @@ const App = () => {
         }
     };
 
-    const years = Array.from({ length: 31 }, (_, i) => 2000 + i);
+    const years = Array.from({ length: 81 }, (_, i) => 1970 + i);
     const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'

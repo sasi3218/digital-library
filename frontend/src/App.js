@@ -23,8 +23,8 @@ const App = () => {
 
     // Hardcoded credentials
     const users = {
-        admin: { username: 'admin', password: 'Dpo@123', role: 'admin' },
-        viewer: { username: 'user', password: 'Dpo@123', role: 'viewer' },
+        admin: { username: 'admin', password: 'Dpo@2025', role: 'admin' },
+        viewer: { username: 'user', password: 'Dpo@2025', role: 'viewer' },
     };
 
     const handleLogin = (e) => {

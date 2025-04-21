@@ -4,7 +4,7 @@ import './App.css';
 
 const App = () => {
     // State for login
-    const [isLoggedIn, setIsLoggedIn] = useState(
+        const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem('isLoggedIn') === 'true'
     );
     const [userRole, setUserRole] = useState(localStorage.getItem('userRole') || '');

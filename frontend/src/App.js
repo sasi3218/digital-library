@@ -100,7 +100,7 @@ const App = () => {
         }
     };
 
-    const years = Array.from({ length: 31 }, (_, i) => 1970 + i);
+    const years = Array.from({ length: 90 }, (_, i) => 1970 + i);
     const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'

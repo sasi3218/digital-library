@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+‎‎import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
 const App = () => {
     // State for login
-        const [isLoggedIn, setIsLoggedIn] = useState(
+    const [isLoggedIn, setIsLoggedIn] = useState(
         localStorage.getItem('isLoggedIn') === 'true'
     );
     const [userRole, setUserRole] = useState(localStorage.getItem('userRole') || '');
-        const [username, setUsername] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState('');
 
@@ -22,7 +22,7 @@ const App = () => {
     const [filterMonth, setFilterMonth] = useState('');
 
     // Hardcoded credentials
-       const users = {
+    const users = {
         admin: { username: 'admin', password: 'Dpo@2025', role: 'admin' },
         viewer: { username: 'user', password: 'Dpo@2025', role: 'viewer' },
     };
@@ -100,7 +100,7 @@ const App = () => {
         }
     };
 
-    const years = Array.from({ length: 31 }, (_, i) => 2000 + i);
+    const years = Array.from({ length: 87 }, (_, i) => 1970 + i);
     const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'

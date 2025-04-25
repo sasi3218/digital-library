@@ -52,7 +52,7 @@ const App = () => {
     };
 
     const fetchFiles = async () => {
-        const response = await axios.get('https://digital-library-production-c64a.up.railway.app/api/files');
+        const response = await axios.get('/api/files');
         setFiles(response.data);
     };
 
@@ -74,7 +74,7 @@ const App = () => {
         formData.append('month', month);
         formData.append('file', file);
 
-        await axios.post('https://digital-library-production-c64a.up.railway.app/api/files/upload', formData, {
+        await axios.post('/api/files/upload', formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
 
@@ -86,7 +86,7 @@ const App = () => {
         console.log("🗑 Deleting file:", filePath); // Debugging Log
     
         try {
-            const response = await axios.delete('https://digital-library-production-c64a.up.railway.app/api/files/delete', {
+            const response = await axios.delete('/api/files/delete', {
                 data: { filePath },  // ✅ Ensure correct filePath is sent
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -262,7 +262,7 @@ const App = () => {
                                             <td>{index + 1}</td>
                                             <td>
                                                 <a
-                                                    href={`https://digital-library-production-c64a.up.railway.app/uploads/${file}`}
+                                                    href={`/uploads/${file}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                 >

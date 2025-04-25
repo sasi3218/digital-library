@@ -25,13 +25,10 @@ jobs:
     - name: Install frontend dependencies and build
       run: cd frontend && npm install && npm run build
       
-    - name: Login to Azure
-      uses: azure/login@v1
-      with:
-        creds: '{"clientId":"${{ secrets.AZUREAPPSERVICE_CLIENTID_56E3EB9F467448219F20FBBA11ED0530C }}","clientSecret":"${{ secrets.AZUREAPPSERVICE_CLIENTSECRET_PLACEHOLDER }}","subscriptionId":"${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4B75E09993CF42A8B38B2C375228C974 }}","tenantId":"${{ secrets.AZUREAPPSERVICE_TENANTID_3DFBC115F0354DDEA2FA3198D9EDDC0C }}"}'
-        
     - name: 'Deploy to Azure Web App'
+      id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: .

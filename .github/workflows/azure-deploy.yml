@@ -9,30 +9,40 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        
-    - name: Install backend dependencies
-      run: cd backend && npm install
-      
-    - name: Install frontend dependencies and build
-      run: cd frontend && npm install && npm run build
-      
-    - name: Install Azure CLI
-      run: |
-        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-        
-    - name: Zip the application
-      run: zip -r deployment.zip . -x "node_modules/*" "frontend/node_modules/*" ".git/*"
-      
-    - name: Deploy to Azure
-      run: |
-        az login --service-principal -u ${{ secrets.AZURE_SP_CLIENT_ID }} -p ${{ secrets.AZURE_SP_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-        az webapp deployment source config-zip --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --name ${{ secrets.AZURE_WEBAPP_NAME }} --src deployment.zip
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Install frontend dependencies and build
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      - name: Package for deployment
+        run: |
+          # from repo root, zip everything except node_modules and .git
+          zip -r deployment.zip . \
+            -x "node_modules/*" \
+            -x "backend/node_modules/*" \
+            -x "frontend/node_modules/*" \
+            -x ".git/*"
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}           # your App Service name
+          slot-name: production                                 # or omit/adjust if you’re not using slots
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: deployment.zip

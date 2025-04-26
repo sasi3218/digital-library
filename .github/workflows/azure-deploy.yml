@@ -18,27 +18,54 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-
+          
       - name: Install backend dependencies
-        run: npm install --prefix backend
+        run: npm install
 
-      - name: Install frontend dependencies and build
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+        
+      - name: Create web.config
         run: |
-          npm install --prefix frontend
-          npm run build --prefix frontend
+          echo '<?xml version="1.0" encoding="utf-8"?>
+          <configuration>
+            <system.webServer>
+              <webSocket enabled="false" />
+              <handlers>
+                <add name="iisnode" path="server.js" verb="*" modules="iisnode"/>
+              </handlers>
+              <rewrite>
+                <rules>
+                  <rule name="StaticContent">
+                    <action type="Rewrite" url="frontend/build{REQUEST_URI}"/>
+                  </rule>
+                  <rule name="DynamicContent">
+                    <conditions>
+                      <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="True"/>
+                    </conditions>
+                    <action type="Rewrite" url="server.js"/>
+                  </rule>
+                </rules>
+              </rewrite>
+              <iisnode watchedFiles="web.config;*.js" node_env="production" />
+            </system.webServer>
+          </configuration>' > web.config
 
-      - name: Package application
+      - name: Zip for deployment
         run: |
           zip -r deployment.zip . \
             -x "node_modules/*" \
-            -x "backend/node_modules/*" \
             -x "frontend/node_modules/*" \
             -x ".git/*"
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}            # your App Service name
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: deployment.zip
-          slot-name: production                                  # remove or change if you don’t use slots

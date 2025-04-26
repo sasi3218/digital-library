@@ -23,7 +23,7 @@ jobs:
         run: |
           cd backend
           npm ci
-
+          
       - name: Install frontend dependencies and build
         run: |
           cd frontend

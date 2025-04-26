@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Node.js
@@ -20,19 +20,15 @@ jobs:
           node-version: '18'
 
       - name: Install backend dependencies
-        run: |
-          cd backend
-          npm ci
-          
+        run: npm install --prefix backend
+
       - name: Install frontend dependencies and build
         run: |
-          cd frontend
-          npm ci
-          npm run build
+          npm install --prefix frontend
+          npm run build --prefix frontend
 
-      - name: Package for deployment
+      - name: Package application
         run: |
-          # from repo root, zip everything except node_modules and .git
           zip -r deployment.zip . \
             -x "node_modules/*" \
             -x "backend/node_modules/*" \
@@ -42,7 +38,7 @@ jobs:
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}           # your App Service name
-          slot-name: production                                 # or omit/adjust if you’re not using slots
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}            # your App Service name
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: deployment.zip
+          slot-name: production                                  # remove or change if you don’t use slots
